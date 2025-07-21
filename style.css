@@ -10,20 +10,24 @@ body {
   padding: 20px;
   text-align: center;
 }
+
 #scene-container {
   max-width: 700px;
   width: 100%;
 }
+
 video, img {
   max-width: 100%;
   border-radius: 15px;
   margin-bottom: 20px;
 }
+
 .overlay-text {
   font-size: 24px;
   margin: 15px 0;
   animation: fadeIn 2s ease-in-out;
 }
+
 button {
   background: #e63946;
   color: #fff;
@@ -35,24 +39,47 @@ button {
   cursor: pointer;
   transition: transform 0.2s;
 }
+
 button:hover {
   transform: scale(1.05);
 }
+
 .itachi-eyes {
   width: 300px;
   animation: glow 2s infinite alternate;
 }
+
 @keyframes glow {
   from { filter: brightness(0.5) drop-shadow(0 0 10px red); }
   to { filter: brightness(1.5) drop-shadow(0 0 25px red); }
 }
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 #cakeImage {
   max-width: 350px;
   opacity: 1;
   transition: opacity 1s ease;
 }
 
+/* ✅ New for scene transitions */
+.fade-in {
+  animation: fadeInQuick 0.5s ease-in;
+}
+
+.fade-out {
+  animation: fadeOut 0.5s ease-out;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fadeInQuick {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
