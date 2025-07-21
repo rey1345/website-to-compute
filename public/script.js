@@ -1,10 +1,11 @@
 let currentScene = 0;
+let bgMusic;
 
 const scenes = [
-  // Scene 1
+  // Scene 1 – Itachi Genjutsu Video
   `
     <video autoplay muted playsinline id="itachiVideo">
-      <source src="YOUR_ITACHI_VIDEO_URL.mp4" type="video/mp4">
+      <source src="https://cdn.pixabay.com/video/2023/03/15/15-29-30-184_640x360.mp4" type="video/mp4">
     </video>
     <div class="overlay-text">
       You’re under my Genjutsu now...<br>
@@ -12,27 +13,27 @@ const scenes = [
     </div>
     <button onclick="nextScene()">Next</button>
   `,
-  // Scene 2
+  // Scene 2 – Itachi Eyes
   `
-    <img src="YOUR_ITACHI_EYES_URL.png" class="itachi-eyes" />
+    <img src="https://i.imgur.com/xcMyl6O.png" class="itachi-eyes" />
     <div class="overlay-text">Look into my eyes...</div>
     <button onclick="nextScene()">Next</button>
   `,
-  // Scene 3
+  // Scene 3 – BSFF Question
   `
     <div class="overlay-text">Is Muji your BSFF?</div>
     <button onclick="answerBSFF(true)">Yes</button>
     <button onclick="answerBSFF(false)">No</button>
     <div id="bsff-result" class="overlay-text"></div>
   `,
-  // Scene 4
+  // Scene 4 – Cake Scene
   `
     <div class="overlay-text">Here’s a cake from me. Hope you like it!</div>
-    <img src="YOUR_CAKE_IMAGE_URL.jpg" id="cakeImage" />
+    <img src="https://cdn.pixabay.com/photo/2016/11/29/04/13/cake-1868679_640.jpg" id="cakeImage" />
     <button onclick="cutCake()">Cut & Eat Cake 🍰</button>
     <button id="nextBtn" style="display:none;" onclick="nextScene()">Next</button>
   `,
-  // Scene 5
+  // Scene 5 – Birthday Wish
   `
     <div class="overlay-text">
       Wishing you the happiest birthday ever, Sufi! 🎉<br>
@@ -40,24 +41,32 @@ const scenes = [
     </div>
     <button onclick="nextScene()">Next</button>
   `,
-  // Scene 6
+  // Scene 6 – Muji Joke
   `
     <div class="overlay-text">Also… Muji? Bro is not even on this level 😆</div>
     <button onclick="nextScene()">Next</button>
   `,
-  // Scene 7
+  // Scene 7 – Dream Ending + Restart
   `
-    <img src="YOUR_ITACHI_EYES_URL.png" class="itachi-eyes" />
+    <img src="https://i.imgur.com/xcMyl6O.png" class="itachi-eyes" />
     <div class="overlay-text">
-      Don’t you think you’re important enough that I made this for you?
-      <br><br>
+      Don’t you think you’re important enough that I made this for you?<br><br>
       It’s just a dream... WAKE UP!
     </div>
+    <button onclick="restartScene()">Restart</button>
   `
 ];
 
 function showScene() {
-  document.getElementById('scene-container').innerHTML = scenes[currentScene];
+  const container = document.getElementById('scene-container');
+  container.classList.remove('fade-in');
+  container.classList.add('fade-out');
+
+  setTimeout(() => {
+    container.innerHTML = scenes[currentScene];
+    container.classList.remove('fade-out');
+    container.classList.add('fade-in');
+  }, 400);
 }
 
 function nextScene() {
@@ -67,11 +76,16 @@ function nextScene() {
   }
 }
 
+function restartScene() {
+  currentScene = 0;
+  showScene();
+}
+
 function answerBSFF(isYes) {
   const res = document.getElementById('bsff-result');
   if (isYes) {
     res.textContent = "😢 But I know I’m still your true BSFF.";
-    playAudio('SAD_MUSIC_URL.mp3');
+    playAudio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_7a15630f78.mp3?filename=sad-soul-loop-2584.mp3');
   } else {
     res.textContent = "😄 Yay! That’s right, I’m your BSFF.";
   }
@@ -80,7 +94,7 @@ function answerBSFF(isYes) {
 
 function cutCake() {
   document.getElementById('cakeImage').style.opacity = "0.4";
-  playAudio('EAT_SOUND_URL.mp3');
+  playAudio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_2d47042dcf.mp3?filename=eating-crunch-7223.mp3');
   document.getElementById('nextBtn').style.display = 'inline-block';
 }
 
@@ -89,4 +103,14 @@ function playAudio(url) {
   audio.play();
 }
 
-window.onload = showScene;
+function startBackgroundMusic() {
+  bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/03/16/audio_e59b8765a2.mp3?filename=calm-relaxing-background-117894.mp3');
+  bgMusic.loop = true;
+  bgMusic.volume = 0.4;
+  bgMusic.play();
+}
+
+window.onload = () => {
+  startBackgroundMusic();
+  showScene();
+};
