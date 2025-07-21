@@ -59,14 +59,19 @@ const scenes = [
 
 function showScene() {
   const container = document.getElementById('scene-container');
+
+  // Fade out current scene
   container.classList.remove('fade-in');
   container.classList.add('fade-out');
 
   setTimeout(() => {
+    // Replace content
     container.innerHTML = scenes[currentScene];
+
+    // Fade in new scene
     container.classList.remove('fade-out');
     container.classList.add('fade-in');
-  }, 400);
+  }, 400); // Duration matches CSS fade-out
 }
 
 function nextScene() {
@@ -89,6 +94,7 @@ function answerBSFF(isYes) {
   } else {
     res.textContent = "😄 Yay! That’s right, I’m your BSFF.";
   }
+
   setTimeout(nextScene, 2500);
 }
 
