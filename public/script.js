@@ -2,15 +2,15 @@ let currentScene = 0;
 let bgMusic;
 
 const scenes = [
-  // Scene 1 – Itachi Genjutsu Video
+  // Scene 1 – Itachi Genjutsu Video + voice
   `
     <video autoplay muted playsinline id="itachiVideo">
       <source src="https://cdn.pixabay.com/video/2023/03/15/15-29-30-184_640x360.mp4" type="video/mp4">
     </video>
-    <div class="overlay-text">
-      You’re under my Genjutsu now...<br>
-      Happy Birthday, Sufi. I might be late, but it took time.
-    </div>
+    <audio id="itachiVoice" autoplay>
+      <source src="https://files.catbox.moe/n9ksg6.mp3" type="audio/mp3">
+    </audio>
+    <div class="overlay-text">You’re under my Genjutsu now...<br>Happy Birthday, Sufi. I might be late, but it took time.</div>
     <button onclick="nextScene()">Next</button>
   `,
   // Scene 2 – Itachi Eyes
@@ -33,7 +33,7 @@ const scenes = [
     <button onclick="cutCake()">Cut & Eat Cake 🍰</button>
     <button id="nextBtn" style="display:none;" onclick="nextScene()">Next</button>
   `,
-  // Scene 5 – Birthday Wish
+  // Scene 5 – Birthday Wish (Confetti)
   `
     <div class="overlay-text">
       Wishing you the happiest birthday ever, Sufi! 🎉<br>
@@ -59,19 +59,20 @@ const scenes = [
 
 function showScene() {
   const container = document.getElementById('scene-container');
-
-  // Fade out current scene
   container.classList.remove('fade-in');
   container.classList.add('fade-out');
 
   setTimeout(() => {
-    // Replace content
     container.innerHTML = scenes[currentScene];
-
-    // Fade in new scene
     container.classList.remove('fade-out');
     container.classList.add('fade-in');
-  }, 400); // Duration matches CSS fade-out
+    const overlayText = container.querySelector(".overlay-text");
+    if (overlayText) typeText(overlayText);
+
+    if (currentScene === 4) {
+      launchConfetti(); // Trigger confetti on birthday wish
+    }
+  }, 400);
 }
 
 function nextScene() {
@@ -94,7 +95,6 @@ function answerBSFF(isYes) {
   } else {
     res.textContent = "😄 Yay! That’s right, I’m your BSFF.";
   }
-
   setTimeout(nextScene, 2500);
 }
 
@@ -116,7 +116,35 @@ function startBackgroundMusic() {
   bgMusic.play();
 }
 
+function typeText(element) {
+  const text = element.innerHTML;
+  element.innerHTML = "";
+  element.classList.add("typing");
+  let index = 0;
+
+  const interval = setInterval(() => {
+    if (index < text.length) {
+      element.innerHTML += text.charAt(index);
+      index++;
+    } else {
+      clearInterval(interval);
+      element.classList.remove("typing");
+    }
+  }, 40);
+}
+
+function launchConfetti() {
+  if (typeof confetti === "function") {
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  }
+}
+
 window.onload = () => {
   startBackgroundMusic();
   showScene();
 };
+
